@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "34739762221",
+    "project_id": "paw-tindr",
+    "storage_bucket": "paw-tindr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34739762221:android:c6f8d862b9b56ae86db4a4",
+        "android_client_info": {
+          "package_name": "com.example.paw_tindr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34739762221-i019sgii4mbb7k1p05s6mtd43tf04dau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWY5vRGIxdfTsnIVWwKOp7IePjwTutEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34739762221-i019sgii4mbb7k1p05s6mtd43tf04dau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
