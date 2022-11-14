@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swipable/flutter_swipable.dart';
+// import 'package:swipe/swipe.dart';
 
 class TinderCard extends StatefulWidget {
-  final color;
+  // final colorCard;
 
-  TinderCard({});
+  // TinderCard({this.colorCard});
+
+  const TinderCard({Key? key}) : super(key: key);
 
   @override
-  State<TinderCard> createState() => _TinderCardState();
+  State<TinderCard> createState() => _TinderCard();
+  
 }
 
-class _TinderCardState extends State<TinderCard> {
-
+class _TinderCard extends State<TinderCard> {
   Row _displayName() {
     return Row(
       children: [
@@ -19,7 +21,7 @@ class _TinderCardState extends State<TinderCard> {
           'Travy',
           style: TextStyle(
             fontSize: 32,
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -28,11 +30,11 @@ class _TinderCardState extends State<TinderCard> {
           'Patty',
           style: TextStyle(
             fontSize: 32,
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-      ]
+      ],
     );
   }
 
@@ -42,8 +44,8 @@ class _TinderCardState extends State<TinderCard> {
         Text(
           '~Icon~',
           style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
+            fontSize: 16,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -51,8 +53,8 @@ class _TinderCardState extends State<TinderCard> {
         Text(
           'Patty',
           style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
+            fontSize: 16,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -66,17 +68,17 @@ class _TinderCardState extends State<TinderCard> {
         Text(
           '~Icon~',
           style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
+            fontSize: 16,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(width: 16),
         Text(
-          'Somebreed idk',
+          'Golden Retriver',
           style: TextStyle(
-            fontSize: 32,
-            color: Colors.black,
+            fontSize: 16,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -86,9 +88,36 @@ class _TinderCardState extends State<TinderCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Swipable(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
       child: Container(
-        color: color,
+        height: 599.0,
+        width: 300.0,
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     image: AssetImage('assets/images/p.png'),
+        //     fit: BoxFit.fill,
+        //   ),
+        // ),
+        color: Colors.red,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.transparent, Colors.black],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.7, 1],
+            ),
+          ),
+          child: Column(
+            children: [
+              Spacer(),
+              _displayName(),
+              _displayAge(),
+              _displayBreed(),
+            ],
+          ),
+        ),
       ),
     );
   }
