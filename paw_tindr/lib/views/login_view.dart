@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paw_tindr/views/home_view.dart';
+import 'package:paw_tindr/views/register_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -87,9 +88,20 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: 12.0,
               ),
-              const Text(
-                "Don't Remember your Password?",
-                style: TextStyle(color: Colors.blue),
+              RawMaterialButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterView(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Don't have an account? Register here.",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 88.0,
@@ -114,7 +126,8 @@ class _LoginViewState extends State<LoginView> {
                     if (user != null) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                            builder: (context) => const HomeView()),
+                          builder: (context) => const HomeView(),
+                        ),
                       );
                     }
                   },
