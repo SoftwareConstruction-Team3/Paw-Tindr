@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:paw_tindr/widgets/tinder_card.dart';
+import 'package:paw_tindr/views/profile_view.dart';
+import 'package:paw_tindr/views/chat_view.dart';
+import 'package:provider/provider.dart';
+import 'package:swipe_cards/swipe_cards.dart';
+import 'dart:core';
 // import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 // import 'package:swipable_stack/swipable_stack.dart';
 
@@ -12,6 +17,48 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  List<SwipeItem> _swipeItems = <SwipeItem>[
+    SwipeItem(
+      content: TinderCard(),
+      likeAction: () {
+        print("liked");
+      },
+      nopeAction: () {
+        print("dislike");
+      },
+      superlikeAction: () {
+        print("superlike");
+      },
+      // onSlideUpdate: (SlideRegion? region) async {
+      //   print("Region $region");
+      // }
+    ),
+  ];
+  int _selectedIndex = 1;
+  MatchEngine? _matchEngine = MatchEngine(swipeItems: _swipeItems);
+
+  // @override
+  // void initState() {
+  //   _swipeItems.add(SwipeItem(
+  //       content: TinderCard(),
+  //       likeAction: () {
+  //         print("liked");
+  //       },
+  //       nopeAction: () {
+  //         print("dislike");
+  //       },
+  //       superlikeAction: () {
+  //        print("superlike");
+  //       },
+  //       // onSlideUpdate: (SlideRegion? region) async {
+  //       //   print("Region $region");
+  //       // }
+  //     )
+  //   );
+
+  //   _matchEngine = MatchEngine(swipeItems: _swipeItems);
+  //   super.initState();
+  // }
   // int counter = 4;
   // card controller
   // SwipeableCardSectionController _cardController = SwipeableCardSectionController();
@@ -33,21 +80,108 @@ class _HomeViewState extends State<HomeView> {
   //     ..dispose();
   // }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+  Image displayLogo() {
+    return Image(
+      image: AssetImage('assets/images/header_logo.png'),
+      width: 400.0,
+      alignment: FractionalOffset.topCenter,
+    );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  List<Widget> _menu = <Widget>[
+    ProfileView(),
+    Center(
+      child: Column(
         children: [
           SafeArea(
             child: Container(
-              height: 599,
+              height: 450,
               width: 300,
               // color: Colors.blue,
-              padding: EdgeInsets.all(16),
-              child: TinderCard(),
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  Image(
+                    image: AssetImage('assets/images/header_logo.png'),
+                    width: 400.0,
+                    alignment: FractionalOffset.topCenter,
+                  ),
+                  Expanded(
+                    child: SwipeCards(
+                      matchEngine: _matchEngine!,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _swipeItems[index].content;
+                      },
+                      onStackFinished: () {
+                        return Center(
+                          child: Text('No more people'),
+                        );
+                      },
+                    ),
+                  ),
+                  // _displayButtons(),
+                ]
+              ) 
             ),
           ),
         ],
+      ),
+    ),
+    ChatView(),
+  ];
+
+  // Row _displayLogo() {
+  //   return Row(
+  //     children: [
+  //       ElevatedButton(
+  //         child: Icon(Icons.clear, color: Colors.red, size:),
+  //         onPressed: () {
+  //           print("clear")
+  //         }
+  //       ),
+  //       ElevatedButton(
+  //         child: Icon(Icons.clear, color: Colors.red, size:),
+  //         onPressed: () {
+  //           print("clear")
+  //         }
+  //       ),
+  //       ElevatedButton(
+  //         child: Icon(Icons.clear, color: Colors.red, size:),
+  //         onPressed: () {
+  //           print("clear")
+  //         }
+  //       ),
+  //     ]
+  //   );
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _menu.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: "Profile"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_outlined),
+            label: "Chat"
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
           // SwipableStack(
