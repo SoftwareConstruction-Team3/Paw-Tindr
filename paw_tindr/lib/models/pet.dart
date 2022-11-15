@@ -12,6 +12,9 @@ class Pet {
   late int rating;
   late Map<Uuid, Pet> matches;
 
+  Pet.registration(this.name, this.breed, this.id, this.owner, this.description,
+      this.matches);
+
   Pet(this.name, this.breed, this.id, this.owner, this.description, this.rating,
       this.matches);
 
