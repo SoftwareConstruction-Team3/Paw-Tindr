@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paw_tindr/controllers/owner_controller.dart';
 
 class Owner extends StatelessWidget {
   const Owner({Key? key}) : super(key: key);

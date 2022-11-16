@@ -37,6 +37,19 @@ class Owner {
     pets = snapshot['pets'];
   }
 
+  /// Adds pet to existing list of pets
+  void addPet(Pet pet){
+    pets.putIfAbsent(pet.id, () => pet);
+  }
+
+  /// Remove pet from existing list of pets
+  bool removePet(Pet pet) {
+    if(pets.remove(pet.id) != null){
+      return true;
+    }
+    return false;
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'first_name': firstName,

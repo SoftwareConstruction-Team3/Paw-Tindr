@@ -6,11 +6,11 @@ import 'owner.dart';
 class Pet {
   late String name;
   late String breed;
-  late Uuid id;
+  late String id;
   late Owner owner;
   late String description;
   late int rating;
-  late Map<Uuid, Pet> matches;
+  late Map<String, Pet> matches;
 
   Pet.registration(this.name, this.breed, this.id, this.owner, this.description,
       this.matches);
@@ -37,6 +37,19 @@ class Pet {
     description = snapshot['description'];
     rating = snapshot['rating'];
     matches = snapshot['matches'];
+  }
+
+  /// Adds a match to the existing matches
+  void addMatch(Pet pet){
+    matches.putIfAbsent(pet.id, () => pet) ;
+  }
+
+  /// Removes a match from the existing matches
+  bool removeMatch(Pet pet){
+    if(matches.remove(pet.id) != null) {
+      return true;
+    }
+    return false;
   }
 
   Map<String, dynamic> toMap() {
