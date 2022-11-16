@@ -7,24 +7,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:paw_tindr/views/login_view.dart';
 
-import 'package:paw_tindr/main.dart';
+Widget createLoginScreen() => const MaterialApp(
+      home: LoginView(),
+    );
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Unit tests for widgets used in different views', () {
+    testWidgets('check login view works properly', (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(createLoginScreen());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verify that our app begins at login screen
+      expect(find.text('Login to your App'), findsOneWidget);
+      expect(find.text('Register'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Tap the email textfield and trigger a frame. Enter test email text
+      var emailTextField = find.byType(TextField).at(0);
+      await tester.tap(emailTextField);
+      await tester.enterText(emailTextField, 'testuser@gmail.com');
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Tap the password textfield and trigger a frame. Enter test email text
+      var passwordTextField = find.byType(TextField).at(1);
+      await tester.tap(passwordTextField);
+      await tester.enterText(passwordTextField, '1234');
+
+      expect(find.text('testuser@gmail.com'), findsOneWidget);
+      expect(find.text('1234'), findsOneWidget);
+    });
   });
 }
