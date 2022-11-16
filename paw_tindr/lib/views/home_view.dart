@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paw_tindr/views/owner_view.dart';
 import 'package:paw_tindr/widgets/tinder_card.dart';
 import 'package:paw_tindr/views/profile_view.dart';
 import 'package:paw_tindr/views/chat_view.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 // import 'dart:core';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 // import 'package:swipable_stack/swipable_stack.dart';
-
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -76,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
   //                 ),
   //                 // _displayButtons(),
   //               ]
-  //             ) 
+  //             )
   //           ),
   //         ),
   //       ],
@@ -87,20 +87,21 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    SwipeableCardSectionController _cardController = SwipeableCardSectionController();
+    SwipeableCardSectionController _cardController =
+        SwipeableCardSectionController();
     List<Widget> _menu = <Widget>[
-      ProfileView(),
+      //ProfileView(),
+      OwnerView(),
       Center(
         child: Column(
           children: [
             SafeArea(
               child: Container(
-                height: 450,
-                width: 300,
-                // color: Colors.blue,
-                padding: EdgeInsets.all(5),
-                child: Column(
-                  children: [
+                  height: 450,
+                  width: 300,
+                  // color: Colors.blue,
+                  padding: EdgeInsets.all(5),
+                  child: Column(children: [
                     Image(
                       image: AssetImage('assets/images/header_logo.png'),
                       width: 400.0,
@@ -129,31 +130,22 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     // _displayButtons(),
-                  ]
-                ) 
-              ),
+                  ])),
             ),
           ],
         ),
       ),
       ChatView(),
-  ];
+    ];
     return Scaffold(
       body: _menu.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: "Profile"
-          ),
+              icon: Icon(Icons.account_circle_outlined), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            label: "Chat"
-          ),
+              icon: Icon(Icons.chat_outlined), label: "Chat"),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
