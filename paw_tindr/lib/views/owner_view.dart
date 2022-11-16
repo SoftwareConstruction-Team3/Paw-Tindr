@@ -22,6 +22,14 @@ class OwnerView extends StatefulWidget {
 }
 
 class _OwnerViewState extends State<OwnerView> {
+  Image displayLogo() {
+    return const Image(
+      image: AssetImage('assets/images/header_logo.png'),
+      width: 400.0,
+      alignment: FractionalOffset.topCenter,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +38,12 @@ class _OwnerViewState extends State<OwnerView> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.orangeAccent[200],
-            title: const Text('Paw-Tindr'),
+            title: //const Text('Paw-Tindr'),
+                const Image(
+              image: AssetImage('assets/images/header_logo.png'),
+              width: 150.0,
+              alignment: FractionalOffset.topCenter,
+            ),
             bottom: const TabBar(tabs: [
               Tab(icon: Icon(Icons.person)),
               Tab(icon: Icon(Icons.pets_sharp)),
