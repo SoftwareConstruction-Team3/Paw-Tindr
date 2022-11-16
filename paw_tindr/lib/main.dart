@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:paw_tindr/views/login_view.dart';
+import 'package:provider/provider.dart';
+import 'package:paw_tindr/providers/card_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -14,7 +16,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (context) => CardProvider(),
+      child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           // This is the theme of your application.
@@ -28,7 +32,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Paw-Tindr'));
+        home: const MyHomePage(title: 'Paw-Tindr')));
   }
 }
 
