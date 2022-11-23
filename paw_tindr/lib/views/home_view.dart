@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paw_tindr/views/owner_view.dart';
 import 'package:paw_tindr/widgets/tinder_card.dart';
 import 'package:paw_tindr/views/profile_view.dart';
+import 'package:paw_tindr/views/matches_view.dart';
 import 'package:paw_tindr/views/chat_view.dart';
 import 'package:provider/provider.dart';
 // import 'package:swipe_cards/swipe_cards.dart';
@@ -91,6 +92,7 @@ class _HomeViewState extends State<HomeView> {
         SwipeableCardSectionController();
     List<Widget> _menu = <Widget>[
       //ProfileView(),
+      //MatchView(),
       OwnerView(),
       Center(
         child: Column(

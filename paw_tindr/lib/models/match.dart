@@ -1,37 +1,29 @@
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
 import 'package:paw_tindr/models/pet.dart';
 import 'package:paw_tindr/models/owner.dart';
 import 'package:paw_tindr/models/chat.dart';
 
-class Match extends StatelessWidget {
-  // String currentPetID;
-  // String otherPetID;
-  // String ownerUserName;
-  // String otherOwnerUserName;
-  // bool matchResult;
+class Match {
+  final String _currentPetID;
+  final String _otherPetID;
+  final String _ownerUserName;
+  final String _otherOwnerUserName;
+  final bool _matchResult;
 
-  // Match(this.currentPetID, this.otherPetID, this.ownerUserName,
-  //     this.otherOwnerUserName, this.matchResult);
+  Match(
+      {currentPetID,
+      otherPetID,
+      ownerUserName,
+      otherOwnerUserName,
+      matchResult})
+      : this._currentPetID = currentPetID,
+        this._otherPetID = otherPetID,
+        this._ownerUserName = ownerUserName,
+        this._otherOwnerUserName = otherOwnerUserName,
+        this._matchResult = matchResult;
 
-  // void displayMatch() {}
-
-  // void goToChat() {}
-
-  // void sendFirstMessage() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        color: const Color.fromARGB(255, 243, 144, 5),
-        child: const Text(
-          'currentPetID, otherPetID, ownerUserName, otherOwnerUserName, matchResult',
-          style: TextStyle(fontSize: 30),
-        ),
-      ),
-    );
-  }
+  String get currentPetID => _currentPetID;
+  String get otherPetID => _otherPetID;
+  String get ownerUserName => _ownerUserName;
+  String get otherOwnerUserName => _otherOwnerUserName;
+  bool get matchResult => _matchResult;
 }
