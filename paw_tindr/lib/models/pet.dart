@@ -7,7 +7,7 @@ class Pet {
   late String name;
   late String breed;
   late String id;
-  late Owner owner;
+  late String owner;
   late String description;
   late int rating;
   late Map<String, Pet> matches;

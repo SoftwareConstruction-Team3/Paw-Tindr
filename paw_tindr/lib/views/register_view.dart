@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:paw_tindr/database/firebase_storage.dart';
+import 'package:paw_tindr/models/owner.dart';
+import 'package:paw_tindr/models/pet.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -15,7 +20,7 @@ class _RegisterViewState extends State<RegisterView> {
   // Owner Variables
   String? _firstName;
   String? _lastName;
-  String? _username;
+  String? _email;
   String? _password;
   String? _dateOfBirth;
   String? _address;
@@ -173,11 +178,11 @@ class _RegisterViewState extends State<RegisterView> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
-                    hintText: "User Name",
+                    hintText: "E-mail Address",
                     prefixIcon: Icon(Icons.account_circle),
                   ),
                   onSaved: (value) {
-                    _username = value;
+                    _email = value;
                   },
                   // The validator receives the text that the user has entered.
                   validator: (value) {
@@ -372,7 +377,8 @@ class _RegisterViewState extends State<RegisterView> {
           },
           onStepTapped: (index) => setState(() {
             if (index == stepList().length - 1) {
-              if (_formKeyDog.currentState!.validate() && _formKey.currentState!.validate()) {
+              if (_formKeyDog.currentState!.validate() &&
+                  _formKey.currentState!.validate()) {
                 _activeStepIndex = index;
               }
             } else {
@@ -400,14 +406,12 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         switch (_activeStepIndex) {
                           case 0:
                             if (_formKey.currentState!.validate()) {
                               details.onStepContinue!();
-                              // If the form is valid, display a snackbar. In the real world,
-                              // you'd often call a server or save the information in a database.
                               _formKey.currentState!.save();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -424,6 +428,48 @@ class _RegisterViewState extends State<RegisterView> {
                                     content: Text('Dog Information Saved')),
                               );
                             }
+                            break;
+                          case 2:
+                            if (_formKey.currentState!.validate() &&
+                                _formKeyDog.currentState!.validate()) {
+                              details.onStepContinue!();
+                              _formKey.currentState!.save();
+                              _formKeyDog.currentState!.save();
+                              // Create firebase user
+                              UserCredential user = await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: _email!, password: _password!);
+                              // Create owner in firebase
+                              Owner owner = Owner(
+                                  user.user!.uid,
+                                  _firstName!,
+                                  _lastName!,
+                                  _email!,
+                                  _password!,
+                                  _dateOfBirth!,
+                                  _address!,
+                                  _zipcode!, []);
+
+                              Pet pet = Pet(_dogName!, _dogBreed!, const Uuid().v1().toString(), owner.id, _dogDescription!, -1, {});
+                              owner.addPet(pet);
+
+                              registerOwnerAndPet(
+                                  owner.firstName,
+                                  owner.lastName,
+                                  owner.email,
+                                  owner.password,
+                                  owner.birthDate,
+                                  owner.address,
+                                  owner.zipcode, owner.pets);
+
+                              registerPet(pet.name, pet.breed, pet.id, pet.owner, pet.description, -1, {});
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Profile created')),
+                              );
+                              Navigator.pop(context);
+                            }
                         }
                       },
                       child: Text(isLastStep ? 'Confirm' : 'Next'),
@@ -437,243 +483,4 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(top: 60.0),
-          child: Center(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      hintText: "First Name",
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    onSaved: (value) {
-                      _firstName = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      hintText: "Last Name",
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    onSaved: (value) {
-                      _lastName = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your last name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      hintText: "User Name",
-                      prefixIcon: Icon(Icons.account_circle),
-                    ),
-                    onSaved: (value) {
-                      _username = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your desired username';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    obscureText: _isObscure,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      prefixIcon: const Icon(Icons.password),
-                      suffixIcon: IconButton(
-                        icon: Icon(_isObscure
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () {
-                          setState(
-                                () {
-                              _isObscure = !_isObscure;
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    onSaved: (value) {
-                      _password = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    obscureText: _isObscure,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      hintText: "Re-enter Password",
-                      prefixIcon: const Icon(Icons.password),
-                      suffixIcon: IconButton(
-                        icon: Icon(_isObscure
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () {
-                          setState(
-                                () {
-                              _isObscure = !_isObscure;
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please re-enter your password';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    controller: _dateController,
-                    keyboardType: TextInputType.none,
-                    decoration: const InputDecoration(
-                      hintText: "Date of Birth",
-                      prefixIcon: Icon(Icons.calendar_month),
-                    ),
-                    onTap: () async {
-                      var date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2022));
-                      _dateController.text = date.toString().substring(0, 10);
-                    },
-                    onSaved: (value) {
-                      _dateOfBirth = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your date of birth.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.streetAddress,
-                    decoration: const InputDecoration(
-                      hintText: "Street Address",
-                      prefixIcon: Icon(Icons.house),
-                    ),
-                    onSaved: (value) {
-                      _address = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your address';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      hintText: "Zip Code",
-                      prefixIcon: Icon(Icons.location_on),
-                    ),
-                    onSaved: (value) {
-                      _zipcode = value;
-                    },
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your zip code.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate()) {
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        _formKey.currentState!.save();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Info')),
-                        );
-                      }
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  */
 }
