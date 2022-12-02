@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:paw_tindr/views/owner_view.dart';
 import 'package:paw_tindr/widgets/tinder_card.dart';
-import 'package:paw_tindr/views/profile_view.dart';
-import 'package:paw_tindr/views/matches_view.dart';
 import 'package:paw_tindr/views/chat_view.dart';
-import 'package:provider/provider.dart';
-// import 'package:swipe_cards/swipe_cards.dart';
-// import 'dart:core';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
-// import 'package:swipable_stack/swipable_stack.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -21,13 +15,13 @@ class _HomeViewState extends State<HomeView> {
   // SwipeableCardSectionController _cardController = SwipeableCardSectionController();
   int _selectedIndex = 1;
 
-  Image displayLogo() {
-    return Image(
-      image: AssetImage('assets/images/header_logo.png'),
-      width: 400.0,
-      alignment: FractionalOffset.topCenter,
-    );
-  }
+  // Image displayLogo() {
+  //   return const Image(
+  //     image: AssetImage('assets/images/header_logo.png'),
+  //     width: 400.0,
+  //     alignment: FractionalOffset.topCenter,
+  //   );
+  // }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -35,114 +29,101 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  // List<Widget> _menu = <Widget>[
-  //   ProfileView(),
-  //   Center(
-  //     child: Column(
-  //       children: [
-  //         SafeArea(
-  //           child: Container(
-  //             height: 450,
-  //             width: 300,
-  //             // color: Colors.blue,
-  //             padding: EdgeInsets.all(5),
-  //             child: Column(
-  //               children: [
-  //                 Image(
-  //                   image: AssetImage('assets/images/header_logo.png'),
-  //                   width: 400.0,
-  //                   alignment: FractionalOffset.topCenter,
-  //                 ),
-  //                 Expanded(
-  //                   child: SwipeableCardsSection(
-  //                     cardController: _cardController,
-  //                     context: context,
-  //                     items: [
-  //                       TinderCard(),
-  //                       TinderCard(),
-  //                       TinderCard(),
-  //                     ],
-  //                     onCardSwiped: (dir, index, widget) {
-  //                       if (dir == Direction.left) {
-  //                         print('Disliked');
-  //                       } else if (dir == Direction.right) {
-  //                         print('Liked');
-  //                       } else if (dir == Direction.up) {
-  //                         print('Up');
-  //                       } else if (dir == Direction.down) {
-  //                         print('down');
-  //                       }
-  //                     },
-  //                   ),
-  //                 ),
-  //                 // _displayButtons(),
-  //               ]
-  //             )
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  //   ChatView(),
-  // ];
-
   @override
   Widget build(BuildContext context) {
-    SwipeableCardSectionController _cardController =
-        SwipeableCardSectionController();
-    List<Widget> _menu = <Widget>[
+    SwipeableCardSectionController cardController = SwipeableCardSectionController();
+    List<Widget> menu = <Widget>[
       //ProfileView(),
       //MatchView(),
-      OwnerView(),
-      Center(
-        child: Column(
-          children: [
-            SafeArea(
-              child: Container(
-                  height: 450,
-                  width: 300,
-                  // color: Colors.blue,
-                  padding: EdgeInsets.all(5),
-                  child: Column(children: [
-                    Image(
-                      image: AssetImage('assets/images/header_logo.png'),
-                      width: 400.0,
-                      alignment: FractionalOffset.topCenter,
-                    ),
-                    Expanded(
-                      child: SwipeableCardsSection(
-                        cardController: _cardController,
-                        context: context,
-                        items: [
-                          TinderCard(),
-                          TinderCard(),
-                          TinderCard(),
-                        ],
-                        onCardSwiped: (dir, index, widget) {
-                          if (dir == Direction.left) {
-                            print('Disliked');
-                          } else if (dir == Direction.right) {
-                            print('Liked');
-                          } else if (dir == Direction.up) {
-                            print('Up');
-                          } else if (dir == Direction.down) {
-                            print('down');
-                          }
-                        },
-                      ),
-                    ),
-                    // _displayButtons(),
-                  ])),
+      const OwnerView(),
+      DefaultTabController(
+        length: 1,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.orangeAccent[200],
+            title: //const Text('Paw-Tindr'),
+                const Image(
+              image: AssetImage('assets/images/header_logo.png'),
+              width: 150.0,
+              alignment: FractionalOffset.topCenter,
             ),
-          ],
+            bottom: const TabBar(tabs: [
+              Tab(icon: Icon(Icons.home)),
+            ]),
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                SafeArea(
+                  child: Container(
+                    height: 420,
+                    width: 300,
+                    // color: Colors.blue,
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        // Expanded(
+                          SwipeableCardsSection(
+                            cardController: cardController,
+                            context: context,
+                            items: const [
+                              TinderCard(
+                                firstName: 'Travy',
+                                lastName: 'Patty',
+                                age: '3 months old',
+                                breed: 'Chihuahua mix',
+                                imagePath: 'images/p.png',
+                              ),
+                              TinderCard(
+                                firstName: 'Firulais',
+                                lastName: 'Gomez',
+                                age: '2 months old',
+                                breed: 'Retriever mix',
+                                imagePath: 'images/puppy.png',
+                              ),
+                              TinderCard(
+                                firstName: 'Rex',
+                                lastName: 'Smith',
+                                age: '2 years old',
+                                breed: 'Husky',
+                                imagePath: 'images/p2.jpeg',
+                              ),
+                              TinderCard(
+                                firstName: 'Max',
+                                lastName: 'Johnson',
+                                age: '3 years old',
+                                breed: 'Labrador',
+                                imagePath: 'images/p.png',
+                              ),
+                            ],
+                            onCardSwiped: (dir, index, widget) {
+                              if (dir == Direction.left) {
+                                print('Disliked');
+                              } else if (dir == Direction.right) {
+                                print('Liked');
+                              } else if (dir == Direction.up) {
+                                print('Up');
+                              } else if (dir == Direction.down) {
+                                print('down');
+                              }
+                            },
+                          ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-      ChatView(),
+      const ChatView(),
     ];
     return Scaffold(
-      body: _menu.elementAt(_selectedIndex),
+      body: menu.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_outlined), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
