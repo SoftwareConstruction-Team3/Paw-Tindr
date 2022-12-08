@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paw_tindr/views/matches_view.dart';
 /*
 class ChatView extends StatefulWidget {
   const ChatView({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 1,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.orangeAccent[200],
@@ -51,6 +52,7 @@ class _ChatViewState extends State<ChatView> {
             bottom: const TabBar(tabs: [
               //Tab(icon: Icon(Icons.person)),
               Tab(icon: Icon(Icons.message)),
+              Tab(icon: Icon(Icons.add_reaction_sharp)),
               //Tab(icon: Icon(Icons.settings)),
             ]),
           ),
@@ -65,6 +67,7 @@ class _ChatViewState extends State<ChatView> {
                 color: Colors.orangeAccent[200],
                 ),
               ),
+              const MatchView(),
             ],
           ),
         ),
