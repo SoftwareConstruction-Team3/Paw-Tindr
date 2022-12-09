@@ -1,35 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-// class Owner extends StatelessWidget {
-//   const Owner({Key? key}) : super(key: key);
+import 'package:paw_tindr/views/login_view.dart';
+import 'package:paw_tindr/views/app_settings_view.dart';
+import '../models/pet.dart';
+import 'app_settings_view.dart';
+import 'login_view.dart';
+import '../models/owner.dart';
+import 'profile_view.dart';
 
-//   //static const String _title = 'Paw-Tindr';
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       //title: _title,
-//       home: OwnerView(),
-//     );
-//   }
-// }
+final _myController = TextEditingController();
 
 class OwnerView extends StatefulWidget {
-  const OwnerView({Key? key}) : super(key: key);
+  final Owner user;
+  const OwnerView(this.user, {super.key});
 
   @override
   State<OwnerView> createState() => _OwnerViewState();
 }
 
 class _OwnerViewState extends State<OwnerView> {
-  Image displayLogo() {
-    return const Image(
-      image: AssetImage('assets/images/header_logo.png'),
-      width: 400.0,
-      alignment: FractionalOffset.topCenter,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,15 +43,27 @@ class _OwnerViewState extends State<OwnerView> {
           ),
           body: TabBarView(
             children: <Widget>[
-              const Center(
-                child: Text('Owner profile view'),
-              ),
-              ListView(
-                children: petList,
-              ),
-              ListView(
-                children: list,
-              ),
+              ProfileView(widget.user),
+              ListView.builder(
+                  itemCount: widget.user.pets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(widget.user.pets.elementAt(index).name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 20.0)),
+                      subtitle:
+                          Text(widget.user.pets.elementAt(index).description),
+                      leading: Icon(
+                        Icons.pets,
+                        color: Colors.orangeAccent[200],
+                      ),
+                    );
+                  }),
+              // petList,
+              AppSettings(widget.user),
+              // ListView(
+              //   children: list,
+              // ),
             ],
           ),
         ),
@@ -69,104 +72,17 @@ class _OwnerViewState extends State<OwnerView> {
   }
 }
 
-List<Widget> list = <Widget>[
-  ListTile(
-    title: const Text('Edit User Information',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
-    //subtitle: const Text(''),
-    leading: Icon(
-      Icons.edit,
-      size: 35,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Username',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert username]: '),
-    leading: Icon(
-      Icons.person_outline,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Email',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert email]: '),
-    leading: Icon(
-      Icons.email_rounded,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Name',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert name]: '),
-    leading: Icon(
-      Icons.person_outline,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Address',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert address]: '),
-    leading: Icon(
-      Icons.home,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Zip Code',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert zip]: '),
-    leading: Icon(
-      Icons.location_on_outlined,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-];
+void main() {
+  Pet pet = Pet.registration('Chuck', 'breed', 'Chuck', 'Dey', 'cute', {});
+  Pet pet2 = Pet.registration('Amy', 'breed', 'Amy', 'Dey', 'feisty', {});
+  Pet pet3 = Pet.registration('Hal', 'breed', 'Hal', 'Dey', 'wild', {});
+  Owner user = Owner.details('suerh2i3urbf', 'Deyanira', 'Ochoa', 'dochoa',
+      'password', '12 / 25 / 1994', '79 test st', '79932', [pet, pet2, pet3]);
+  initSettings();
+  runApp(OwnerView(user));
+}
 
-List<Widget> petList = <Widget>[
-  ListTile(
-    title: const Text('Pet1',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert pet stuff]: '),
-    leading: Icon(
-      Icons.pets,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Pet2',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert pet stuff]: '),
-    leading: Icon(
-      Icons.pets,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Pet3',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('[insert pet stuff]: '),
-    leading: Icon(
-      Icons.pets,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-  ListTile(
-    title: const Text('Add Pet',
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-    subtitle: const Text('will create button to create new profile for pet: '),
-    leading: Icon(
-      Icons.add_circle,
-      color: Colors.orangeAccent[200],
-    ),
-  ),
-];
-
-// // for testing
-// void main() => runApp(const OwnerView(
-//       title: 'Paw-Tindr',
-//     ));
+void initSettings() async {
+  await Settings.init();
+  return;
+}

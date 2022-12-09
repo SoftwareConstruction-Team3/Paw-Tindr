@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paw_tindr/models/message.dart';
-
+import 'package:paw_tindr/models/owner.dart';
 import '../models/chat.dart';
 import '../models/pet.dart';
 
@@ -14,7 +14,8 @@ Future<void> registerOwnerAndPet(
     String birthDate,
     String address,
     String zipcode,
-    List<String> pets) async {
+    List<Pet> pets) async {
+
   CollectionReference owners = FirebaseFirestore.instance.collection('Owners');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
@@ -45,6 +46,7 @@ Future<void> registerPet(String name, String breed, String id, String owner,
   });
 }
 
+
 Future<void> addMessage(Message message, String matchID) async {
   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
       .collection('Chats').doc('${FirebaseAuth.instance.currentUser?.uid}').get();
@@ -64,3 +66,4 @@ Future<void> addMessage(Message message, String matchID) async {
 
   documentSnapshot.reference.set({'chats': FieldValue.arrayUnion(chatMapList)});
 }
+

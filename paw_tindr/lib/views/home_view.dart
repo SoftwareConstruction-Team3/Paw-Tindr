@@ -3,9 +3,12 @@ import 'package:paw_tindr/views/owner_view.dart';
 import 'package:paw_tindr/widgets/tinder_card.dart';
 import 'package:paw_tindr/views/chat_view.dart';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
+import '../models/owner.dart';
+import 'login_view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  final Owner user;
+  const HomeView(this.user, {Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -15,13 +18,6 @@ class _HomeViewState extends State<HomeView> {
   // SwipeableCardSectionController _cardController = SwipeableCardSectionController();
   int _selectedIndex = 1;
 
-  // Image displayLogo() {
-  //   return const Image(
-  //     image: AssetImage('assets/images/header_logo.png'),
-  //     width: 400.0,
-  //     alignment: FractionalOffset.topCenter,
-  //   );
-  // }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -31,11 +27,12 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    SwipeableCardSectionController cardController = SwipeableCardSectionController();
+    SwipeableCardSectionController cardController =
+        SwipeableCardSectionController();
     List<Widget> menu = <Widget>[
-      //ProfileView(),
-      //MatchView(),
-      const OwnerView(),
+      OwnerView(
+        widget.user,
+      ),
       DefaultTabController(
         length: 1,
         child: Scaffold(

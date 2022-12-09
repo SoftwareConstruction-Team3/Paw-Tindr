@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:paw_tindr/views/login_view.dart';
 // import 'package:provider/provider.dart';
 // import 'package:paw_tindr/providers/card_provider.dart';
@@ -7,7 +8,13 @@ import 'package:paw_tindr/views/login_view.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  initSettings();
   runApp(const MyApp());
+}
+
+void initSettings() async {
+  await Settings.init();
+  return;
 }
 
 class MyApp extends StatelessWidget {
