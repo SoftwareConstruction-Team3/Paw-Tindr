@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../models/owner.dart';
+
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  final Owner user;
+  const ProfileView(this.user, {super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
