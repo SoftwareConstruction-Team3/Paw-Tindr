@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:paw_tindr/models/owner.dart';
+import 'package:paw_tindr/models/message.dart';
 
+import '../models/chat.dart';
 import '../models/pet.dart';
 
 /// Method to register an owner into fire store
@@ -42,4 +43,24 @@ Future<void> registerPet(String name, String breed, String id, String owner,
     'rating': rating,
     'matches': {}
   });
+}
+
+Future<void> addMessage(Message message, String matchID) async {
+  DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+      .collection('Chats').doc('${FirebaseAuth.instance.currentUser?.uid}').get();
+  List<dynamic> rawChats = documentSnapshot.get('chats');
+  List<Chat> chats = [];
+  for (var chat in rawChats) {
+    chats.add(Chat.fromMap(chat));
+  }
+  Chat currentChat = chats.firstWhere((chat) => chat.matchID == matchID);
+  currentChat.messageList.add(message);
+  currentChat.lastMessage = message.text;
+
+  var chatMapList = [];
+  for (var chat in chats) {
+    chatMapList.add(chat.toMap());
+  }
+
+  documentSnapshot.reference.set({'chats': FieldValue.arrayUnion(chatMapList)});
 }
