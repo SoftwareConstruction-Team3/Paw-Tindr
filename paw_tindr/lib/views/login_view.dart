@@ -1,16 +1,8 @@
-import 'dart:async';
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:paw_tindr/firebase_options.dart';
 import 'package:paw_tindr/views/home_view.dart';
 import 'package:paw_tindr/views/register_view.dart';
-
-import '../models/owner.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -18,8 +10,8 @@ class LoginView extends StatefulWidget {
   @override
   State<LoginView> createState() => _LoginViewState();
 }
-// Login to the system
 
+// Login to the system
 class _LoginViewState extends State<LoginView> {
   static Future<User?> loginWithEmailAndPassword(
       {required String email,
@@ -44,7 +36,6 @@ class _LoginViewState extends State<LoginView> {
     // Controllers for text email and password
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -130,71 +121,10 @@ class _LoginViewState extends State<LoginView> {
                         password: passwordController.text,
                         context: context,
                       );
-                      Owner owner;
-                      print(await FirebaseFirestore.instance
-                          .collection("Owners")
-                          .doc(user?.uid)
-                          .get());
-                      owner = Owner.fromSnapshot((await FirebaseFirestore
-                          .instance
-                          .collection("Owners")
-                          .where('id', isEqualTo: user?.uid)
-                          .get()) as DocumentSnapshot<Object?>);
-                      if (FirebaseAuth.instance.currentUser != null) {
-                        final ref = FirebaseFirestore.instance
-                            .collection("Owners")
-                            .doc(user?.uid)
-                            .withConverter(
-                              fromFirestore: Owner.fromFirestore,
-                              toFirestore: (Owner owner, _) =>
-                                  owner.toFirestore(),
-                            );
-
-                        final docsnap = await ref.get();
-                        final owner = docsnap.data;
-                        if (owner != null)
-                          print(owner);
-                        else
-                          print('no such doc');
-
-                        // const source = Source.cache;
-                        // ref.get(const GetOptions(source: source)).then((value) => null)
-                        // .withConverter(
-                        //   fromFirestore: Owner.fromFirestore,
-                        //   toFirestore: (Owner owner, _) =>
-                        //       owner.toFirestore(),
-                        // );
-                        // final Owner owner =
-                        // DocumentReference ownersref =
-                        //     owners.where('id', isEqualTo: user!.uid);
-
-                        // await ownersref.get().then((snapshot) {
-                        //   snapshot.docs.forEach((document) {
-                        //     print(document.data()['id']);
-                        //   });
-                        // });
-
-                        // print(user!.uid);
-                        // print(user.providerData);
-                        // var test = await owners
-                        //     .doc(FirebaseAuth.instance.currentUser!.uid);
-
-                        // owners
-                        //     .doc(FirebaseAuth.instance.currentUser!.uid)
-                        //     .get()
-                        //     .then((s) => print(s.toString()));
-
-                        // if (owner != null) {
-                        //   print(owner.firstName);
-                        // } else {
-                        //   print("No such document.");
-                        // }
-                      }
-
-                      if (user?.uid == owner!.id) {
+                      if (user != null) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => HomeView(owner),
+                            builder: (context) => const HomeView(),
                           ),
                         );
                       }
