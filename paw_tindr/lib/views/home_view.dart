@@ -8,7 +8,7 @@ import 'login_view.dart';
 
 class HomeView extends StatefulWidget {
   // final Owner user;
-  const HomeView(/*this.user, */ {Key? key}) : super(key: key);
+  const HomeView(/*this.user,*/ {Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -29,9 +29,7 @@ class _HomeViewState extends State<HomeView> {
     SwipeableCardSectionController cardController =
         SwipeableCardSectionController();
     List<Widget> menu = <Widget>[
-      OwnerView(
-        widget.user,
-      ),
+      OwnerView(),
       DefaultTabController(
         length: 1,
         child: Scaffold(

@@ -10,7 +10,7 @@ class Owner {
   late String birthDate;
   late String address;
   late String zipcode;
-  late List<Pet> pets;
+  late List<String> pets;
   Owner();
 
   Owner.details(this.id, this.firstName, this.lastName, this.email,
@@ -18,13 +18,13 @@ class Owner {
 
   factory Owner.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
+    // SnapshotOptions? options,
   ) {
     final data = snapshot.data();
     return Owner.details(
       data?['id'],
-      data?['first_Name'],
-      data?['last_Name'],
+      data?['first_name'],
+      data?['last_name'],
       data?['email'],
       data?['password'],
       data?['birth_date'],
@@ -34,17 +34,17 @@ class Owner {
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Object toFirestore() {
     return {
-      if (id != null) "id": id,
-      if (firstName != null) "first_Name": firstName,
-      if (lastName != null) "last_Name": lastName,
-      if (email != null) "email": email,
-      if (password != null) "password": password,
-      if (birthDate != null) "birth_date": birthDate,
-      if (address != null) "address": address,
-      if (zipcode != null) "zipcode": zipcode,
-      if (pets != null) "pets": pets,
+      "id": id,
+      "first_Name": firstName,
+      "last_Name": lastName,
+      "email": email,
+      "password": password,
+      "birth_date": birthDate,
+      "address": address,
+      "zipcode": zipcode,
+      "pets": pets,
     };
   }
 
@@ -85,8 +85,8 @@ class Owner {
   }
 
   /// Adds pet to existing list of pets
-  void addPet(Pet pet) {
-    pets.add(pet);
+  void addPet(String petID) {
+    pets.add(petID);
   }
 
   /// Remove pet from existing list of pets

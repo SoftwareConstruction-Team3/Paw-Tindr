@@ -18,6 +18,33 @@ class Pet {
   Pet(this.name, this.breed, this.id, this.owner, this.description, this.rating,
       this.matches);
 
+  factory Pet.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    // SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Pet(
+      data?['name'],
+      data?['breed'],
+      data?['id'],
+      data?['owner'],
+      data?['description'],
+      data?['rating'],
+      Map.from(data?['matches']),
+    );
+  }
+
+  Object toFirestore() {
+    return {
+      "id": id,
+      "name": name,
+      "breed": breed,
+      "owner": owner,
+      "description": description,
+      "rating": rating,
+      "matches": matches,
+    };
+  }
 
   Pet.fromMap(Map<String, dynamic> map) {
     name = map['name'];
@@ -40,13 +67,13 @@ class Pet {
   }
 
   /// Adds a match to the existing matches
-  void addMatch(Pet pet){
-    matches.putIfAbsent(pet.id, () => pet) ;
+  void addMatch(Pet pet) {
+    matches.putIfAbsent(pet.id, () => pet);
   }
 
   /// Removes a match from the existing matches
-  bool removeMatch(Pet pet){
-    if(matches.remove(pet.id) != null) {
+  bool removeMatch(Pet pet) {
+    if (matches.remove(pet.id) != null) {
       return true;
     }
     return false;

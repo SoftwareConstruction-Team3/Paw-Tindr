@@ -1,26 +1,38 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-
-import 'package:paw_tindr/views/login_view.dart';
 import 'package:paw_tindr/views/app_settings_view.dart';
-import '../models/pet.dart';
+import 'package:paw_tindr/views/pets_list_view.dart';
 import 'app_settings_view.dart';
-import 'login_view.dart';
 import '../models/owner.dart';
 import 'profile_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final _myController = TextEditingController();
 
 class OwnerView extends StatefulWidget {
-  final Owner user;
-  const OwnerView(this.user, {super.key});
+  const OwnerView({super.key});
 
   @override
   State<OwnerView> createState() => _OwnerViewState();
 }
 
 class _OwnerViewState extends State<OwnerView> {
+  Future<Owner> getOwner() async {
+    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+        .instance
+        .collection('Owners')
+        .doc('${FirebaseAuth.instance.currentUser?.uid}')
+        .get();
+    Owner user = Owner.fromFirestore(doc);
+
+    return user;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,30 +53,33 @@ class _OwnerViewState extends State<OwnerView> {
               Tab(icon: Icon(Icons.settings)),
             ]),
           ),
-          body: TabBarView(
-            children: <Widget>[
-              ProfileView(widget.user),
-              ListView.builder(
-                  itemCount: widget.user.pets.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(widget.user.pets.elementAt(index).name,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 20.0)),
-                      subtitle:
-                          Text(widget.user.pets.elementAt(index).description),
-                      leading: Icon(
-                        Icons.pets,
-                        color: Colors.orangeAccent[200],
-                      ),
+          body: FutureBuilder(
+            builder: (context, snapshot) {
+              // Checking if future is resolved
+              if (snapshot.connectionState == ConnectionState.done) {
+                // If we got an error
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      '${snapshot.error} occurred',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  );
+
+                  // if we got our data
+                } else if (snapshot.hasData) {
+                  // Extracting data from snapshot object
+                  if (snapshot.requireData == null) {
+                    return const Center(
+                      child: Text('No user data.'),
                     );
-                  }),
-              // petList,
-              AppSettings(widget.user),
-              // ListView(
-              //   children: list,
-              // ),
-            ],
+                  }
+                  return _buildOwnerView(snapshot.requireData);
+                }
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+            future: getOwner(),
           ),
         ),
       ),
@@ -72,17 +87,26 @@ class _OwnerViewState extends State<OwnerView> {
   }
 }
 
-void main() {
-  Pet pet = Pet.registration('Chuck', 'breed', 'Chuck', 'Dey', 'cute', {});
-  Pet pet2 = Pet.registration('Amy', 'breed', 'Amy', 'Dey', 'feisty', {});
-  Pet pet3 = Pet.registration('Hal', 'breed', 'Hal', 'Dey', 'wild', {});
-  Owner user = Owner.details('suerh2i3urbf', 'Deyanira', 'Ochoa', 'dochoa',
-      'password', '12 / 25 / 1994', '79 test st', '79932', [pet, pet2, pet3]);
-  initSettings();
-  runApp(OwnerView(user));
-}
-
-void initSettings() async {
-  await Settings.init();
-  return;
+_buildOwnerView(Owner user) {
+  return TabBarView(
+    children: <Widget>[
+      ProfileView(user),
+      PetListView(user),
+      // ListView.builder(
+      //     itemCount: user.pets.length,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       return ListTile(
+      //         title: Text(user.pets.elementAt(index),
+      //             style: const TextStyle(
+      //                 fontWeight: FontWeight.w500, fontSize: 20.0)),
+      //         subtitle: Text(user.pets.elementAt(index)),
+      //         leading: Icon(
+      //           Icons.pets,
+      //           color: Colors.orangeAccent[200],
+      //         ),
+      //       );
+      //     }),
+      AppSettings(user),
+    ],
+  );
 }
