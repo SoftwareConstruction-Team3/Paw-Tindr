@@ -440,7 +440,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   .createUserWithEmailAndPassword(
                                       email: _email!, password: _password!);
                               // Create owner in firebase
-                              Owner owner = Owner(
+                              Owner owner = Owner.details(
                                   user.user!.uid,
                                   _firstName!,
                                   _lastName!,
@@ -450,8 +450,14 @@ class _RegisterViewState extends State<RegisterView> {
                                   _address!,
                                   _zipcode!, []);
 
-                              Pet pet = Pet(_dogName!, _dogBreed!, const Uuid().v1().toString(), owner.id, _dogDescription!, -1, {});
-                              owner.addPet(pet);
+                              Pet pet = Pet(
+                                  _dogName!,
+                                  _dogBreed!,
+                                  const Uuid().v1().toString(),
+                                  owner.id,
+                                  _dogDescription!,
+                                  -1, {});
+                              owner.addPet(pet.id);
 
                               registerOwnerAndPet(
                                   owner.firstName,
@@ -460,9 +466,11 @@ class _RegisterViewState extends State<RegisterView> {
                                   owner.password,
                                   owner.birthDate,
                                   owner.address,
-                                  owner.zipcode, owner.pets);
+                                  owner.zipcode,
+                                  owner.pets);
 
-                              registerPet(pet.name, pet.breed, pet.id, pet.owner, pet.description, -1, {});
+                              registerPet(pet.name, pet.breed, pet.id,
+                                  pet.owner, pet.description, -1, {});
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

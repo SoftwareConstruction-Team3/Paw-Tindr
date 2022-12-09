@@ -14,12 +14,11 @@ Future<void> registerOwnerAndPet(
     String birthDate,
     String address,
     String zipcode,
-    List<Pet> pets) async {
-
+    List<String> pets) async {
   CollectionReference owners = FirebaseFirestore.instance.collection('Owners');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
-  owners.add({
+  owners.doc('${uid}').set({
     'id': uid,
     'first_name': firstName,
     'last_name': lastName,
@@ -35,7 +34,7 @@ Future<void> registerOwnerAndPet(
 Future<void> registerPet(String name, String breed, String id, String owner,
     String description, int rating, Map<String, Pet> matches) async {
   CollectionReference pets = FirebaseFirestore.instance.collection('Pets');
-  pets.add({
+  pets.doc(id).set({
     'name': name,
     'breed': breed,
     'id': id,
@@ -46,10 +45,11 @@ Future<void> registerPet(String name, String breed, String id, String owner,
   });
 }
 
-
 Future<void> addMessage(Message message, String matchID) async {
   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-      .collection('Chats').doc('${FirebaseAuth.instance.currentUser?.uid}').get();
+      .collection('Chats')
+      .doc('${FirebaseAuth.instance.currentUser?.uid}')
+      .get();
   List<dynamic> rawChats = documentSnapshot.get('chats');
   List<Chat> chats = [];
   for (var chat in rawChats) {
@@ -66,4 +66,3 @@ Future<void> addMessage(Message message, String matchID) async {
 
   documentSnapshot.reference.set({'chats': FieldValue.arrayUnion(chatMapList)});
 }
-
