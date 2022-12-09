@@ -49,6 +49,7 @@ dependencies:
   swipe: ^0.0.1
   provider: ^6.0.4
   swipe_cards: ^1.0.0
+  flutter_chat_ui: ^1.6.6
 
 dedependency_overrides:
   firebase_core_platform_interface: 4.5.1
