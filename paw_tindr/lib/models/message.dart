@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Message {
   late int epochTimeMs;
   late bool seen;
+  late bool reciever;
   late String senderId;
   late String text;
 
-  Message(this.epochTimeMs, this.seen, this.senderId, this.text);
+  Message(this.epochTimeMs, this.seen, this.reciever, this.senderId, this.text);
   Message.constructor(String data);
 
   Message.fromMap(Map<String, dynamic> map) {
