@@ -15,11 +15,11 @@ class Match {
       ownerUserName,
       otherOwnerUserName,
       matchResult})
-      : this._currentPetID = currentPetID,
-        this._otherPetID = otherPetID,
-        this._ownerUserName = ownerUserName,
-        this._otherOwnerUserName = otherOwnerUserName,
-        this._matchResult = matchResult;
+      : _currentPetID = currentPetID,
+        _otherPetID = otherPetID,
+        _ownerUserName = ownerUserName,
+        _otherOwnerUserName = otherOwnerUserName,
+        _matchResult = matchResult;
 
   String get currentPetID => _currentPetID;
   String get otherPetID => _otherPetID;

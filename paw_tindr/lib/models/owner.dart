@@ -11,7 +11,6 @@ class Owner {
   late String address;
   late String zipcode;
   late List<Pet> pets;
-
   Owner();
 
   Owner.details(this.id, this.firstName, this.lastName, this.email,

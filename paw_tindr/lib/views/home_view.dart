@@ -18,6 +18,7 @@ class _HomeViewState extends State<HomeView> {
   // SwipeableCardSectionController _cardController = SwipeableCardSectionController();
   int _selectedIndex = 1;
 
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -59,51 +60,51 @@ class _HomeViewState extends State<HomeView> {
                     child: Column(
                       children: [
                         // Expanded(
-                        SwipeableCardsSection(
-                          cardController: cardController,
-                          context: context,
-                          items: const [
-                            TinderCard(
-                              firstName: 'Travy',
-                              lastName: 'Patty',
-                              age: '3 months old',
-                              breed: 'Chihuahua mix',
-                              imagePath: 'images/p.png',
-                            ),
-                            TinderCard(
-                              firstName: 'Firulais',
-                              lastName: 'Gomez',
-                              age: '2 months old',
-                              breed: 'Retriever mix',
-                              imagePath: 'images/puppy.png',
-                            ),
-                            TinderCard(
-                              firstName: 'Rex',
-                              lastName: 'Smith',
-                              age: '2 years old',
-                              breed: 'Husky',
-                              imagePath: 'images/p2.jpeg',
-                            ),
-                            TinderCard(
-                              firstName: 'Max',
-                              lastName: 'Johnson',
-                              age: '3 years old',
-                              breed: 'Labrador',
-                              imagePath: 'images/p.png',
-                            ),
-                          ],
-                          onCardSwiped: (dir, index, widget) {
-                            if (dir == Direction.left) {
-                              print('Disliked');
-                            } else if (dir == Direction.right) {
-                              print('Liked');
-                            } else if (dir == Direction.up) {
-                              print('Up');
-                            } else if (dir == Direction.down) {
-                              print('down');
-                            }
-                          },
-                        ),
+                          SwipeableCardsSection(
+                            cardController: cardController,
+                            context: context,
+                            items: const [
+                              TinderCard(
+                                firstName: 'Travy',
+                                lastName: 'Patty',
+                                age: '3 months old',
+                                breed: 'Chihuahua mix',
+                                imagePath: 'images/p.png',
+                              ),
+                              TinderCard(
+                                firstName: 'Firulais',
+                                lastName: 'Gomez',
+                                age: '2 months old',
+                                breed: 'Retriever mix',
+                                imagePath: 'images/puppy.png',
+                              ),
+                              TinderCard(
+                                firstName: 'Rex',
+                                lastName: 'Smith',
+                                age: '2 years old',
+                                breed: 'Husky',
+                                imagePath: 'images/p2.jpeg',
+                              ),
+                              TinderCard(
+                                firstName: 'Max',
+                                lastName: 'Johnson',
+                                age: '3 years old',
+                                breed: 'Labrador',
+                                imagePath: 'images/p.png',
+                              ),
+                            ],
+                            onCardSwiped: (dir, index, widget) {
+                              if (dir == Direction.left) {
+                                print('Disliked');
+                              } else if (dir == Direction.right) {
+                                print('Liked');
+                              } else if (dir == Direction.up) {
+                                print('Up');
+                              } else if (dir == Direction.down) {
+                                print('down');
+                              }
+                            },
+                          ),
                         // ),
                       ],
                     ),

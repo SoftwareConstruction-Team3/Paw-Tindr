@@ -47,8 +47,9 @@ dependencies:
   swipeable_card_stack: ^0.0.5
   swipable_stack: ^2.0.0
   swipe: ^0.0.1
-  provider: ^6.0.4
+  provider: 
   swipe_cards: ^1.0.0
+  flutter_settings_screens: ^0.2.2+1 
 
 dedependency_overrides:
   firebase_core_platform_interface: 4.5.1

@@ -7,12 +7,12 @@ void main() {
   group('Test models used by widgets', () {
     test('owner class holds right info', () {
       // Build owner and pets with mock data
-      var owner = Owner('Test', 'Last Name', 'test123', '1234',
-          DateTime.utc(2022), 'Test Address Dr.', '79968', {});
+      var owner = Owner('1','Test', 'Last Name', 'test123', '1234',
+          DateTime.utc(2022).toString(), 'Test Address Dr.', '79968', []);
 
       expect(owner.firstName, 'Test');
       expect(owner.lastName, 'Last Name');
-      expect(owner.username, 'test123');
+      expect(owner.email, 'test123@gmail.com');
       expect(owner.password, '1234');
       expect(owner.address, 'Test Address Dr.');
       expect(owner.zipcode, '79968');
@@ -21,10 +21,10 @@ void main() {
     test('pet holds correct information', () {
       // Build owner and pets with mock data
       var petId = const Uuid().v1();
-      var owner = Owner('Test', 'Last Name', 'test123', '1234',
-          DateTime.utc(2022), 'Test Address Dr.', '79968', {});
+      var owner = Owner('1', 'Test', 'Last Name', 'test123', '1234',
+          DateTime.utc(2022).toString(), 'Test Address Dr.', '79968', []);
       var pet =
-          Pet('Test Pet', 'Husky', petId, owner, 'Test description', -1, {});
+          Pet('Test Pet', 'Husky', petId, owner.id, 'Test description', -1, {});
 
       expect(pet.name, 'Test Pet');
       expect(pet.breed, 'Husky');
@@ -37,24 +37,24 @@ void main() {
     test('owner can add pet', () {
       // Build owner and pets with mock data
       var petId = const Uuid().v1();
-      var owner = Owner('Test', 'Last Name', 'test123', '1234',
-          DateTime.utc(2022), 'Test Address Dr.', '79968', {});
+      var owner = Owner('1', 'Test', 'Last Name', 'test123', '1234',
+          DateTime.utc(2022).toString(), 'Test Address Dr.', '79968', []);
       var pet =
-          Pet('Test Pet', 'Husky', petId, owner, 'Test description', -1, {});
+          Pet('Test Pet', 'Husky', petId, owner.id, 'Test description', -1, {});
 
       owner.addPet(pet);
 
       expect(owner.pets.length, 1);
-      expect(owner.pets.containsKey(petId), true);
+      expect(owner.pets.contains(petId), true);
     });
 
     test('owner can remove pet', () {
       // Build owner and pets with mock data
       var petId = const Uuid().v1();
-      var owner = Owner('Test', 'Last Name', 'test123', '1234',
-          DateTime.utc(2022), 'Test Address Dr.', '79968', {});
+      var owner = Owner('1', 'Test', 'Last Name', 'test123', '1234',
+          DateTime.utc(2022).toString(), 'Test Address Dr.', '79968', []);
       var pet =
-          Pet('Test Pet', 'Husky', petId, owner, 'Test description', -1, {});
+          Pet('Test Pet', 'Husky', petId, owner.id, 'Test description', -1, {});
 
       owner.addPet(pet);
 
@@ -63,16 +63,16 @@ void main() {
 
       // Verify that our app begins at login screen
       expect(owner.pets.length, 0);
-      expect(owner.pets.containsKey(petId), false);
+      expect(owner.pets.contains(petId), false);
     });
 
     test('owner build to and rebuild from map', () {
       // Build owner and pets with mock data
       var petId = const Uuid().v1();
-      var owner = Owner('Test', 'Last Name', 'test123', '1234',
-          DateTime.utc(2022), 'Test Address Dr.', '79968', {});
+      var owner = Owner('1', 'Test', 'Last Name', 'test123', '1234',
+          DateTime.utc(2022).toString(), 'Test Address Dr.', '79968', []);
       var pet =
-      Pet('Test Pet', 'Husky', petId, owner, 'Test description', -1, {});
+      Pet('Test Pet', 'Husky', petId, owner.id, 'Test description', -1, {});
 
       owner.addPet(pet);
 
@@ -81,7 +81,7 @@ void main() {
 
       expect(owner.firstName, ownerFromMap.firstName);
       expect(owner.lastName, ownerFromMap.lastName);
-      expect(owner.username, ownerFromMap.username);
+      expect(owner.email, ownerFromMap.email);
       expect(owner.password, ownerFromMap.password);
       expect(owner.address, ownerFromMap.address);
       expect(owner.zipcode, ownerFromMap.zipcode);
